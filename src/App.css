@@ -42,3 +42,121 @@
   font-weight : 700;
   margin-top : 20px;
 }
+.questionLayout{
+  display : flex;
+  flex-direction : column;
+  background-color : #bacee0;
+  width : 100%;
+  max-width : 900px;
+  height : 100%;
+  overflow : hidden;
+}
+.mbtiTitle{
+  display : flex;
+  flex-direction : row;
+  width : 100%;
+  align-items : center;
+  padding : 15px;
+  box-sizing : border-box;
+  font-weight : 700;
+}
+.mbtiTitle div:nth-child(1) {
+  display : flex;
+  flex : 1;
+}
+.questionList{
+  flex-direction : column;
+  height : 100%;
+  overflow : scroll;
+  scrollbar-width : none;
+}
+.questionList::-webkit-scrollbar {
+  display : none;
+}
+.questionItem{
+  display : flex;
+  flex : 1;
+  margin : 10px 15px 5px 15px;
+}
+.answerItem{
+  width : 100%;
+  background-color : #fff;
+  padding-bottom : 10px;
+  display : flex;
+  flex-direction : column;
+}
+.profileImg {
+  display : flex;
+  flex-direction : column;
+  width : 40px;
+  height : 40px;
+  background-color : #a1b6e9;
+  border-radius : 15px;
+  margin-right : 5px;
+  align-items : center;
+  justify-content : center;
+}
+.profileImg div:nth-child(1) {
+  background-color : #cbd6f2;
+  width : 8px;
+  height : 8px;
+  border-radius : 4px;
+}
+.profileImg div:nth-child(2) {
+  background-color : #cbd6f2;
+  width: 16px;
+  height : 8px;
+  border-radius : 8px 8px 0px 0px;
+  margin-top : 2px;
+}
+.chatList {
+  display : flex;
+  flex-direction : column;
+}
+.chatBox {
+  display : flex;
+  flex-direction : row;
+  align-items : flex-start;
+  max-width : 60vw;
+  margin : 3px 0px 12px 0px;
+}
+.chatBox div:nth-child(1) {
+  color : #fff;
+  font-size : 12px;
+  margin-top : 8px;
+}
+.chatBox div:nth-child(2) {
+  padding : 7px 10px 7px 10px;
+  background-color : #fff;
+  margin-left : -4px;
+  border-radius : 10px;
+  text-align : left;
+}
+.aChatBox {
+  display : flex;
+  width : 100%;
+  color : #969696;
+  font-size : 22px;
+  border-bottom : 1px solid #eee;
+  margin-bottom : 25px;
+}
+.aChatBox div:nth-child(1) {
+  display : flex;
+  flex : 1;
+  padding: 10px;
+  box-sizing: border-box;
+} 
+.aChatBox div:nth-child(2) {
+  padding : 10px;
+}
+.answerBox {
+  display : flex;
+  align-items : center;
+  justify-content : center;
+  height : 100px;
+  text-align : center;
+  box-shadow : 2px 2px 0px #ededed;
+  border : 1px solid #ededed;
+  margin : 0px 20px 15px 20px;  
+  border-radius : 10px;
+}

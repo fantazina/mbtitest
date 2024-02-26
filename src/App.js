@@ -70,7 +70,7 @@ function App() {
      a : [{type : 'P', text : '시험 2주나 남았네! 놀아야지~'},
           {type : 'J', text : '시험이 2주 밖에 안 남았네. 공부 계획 짜야지'}]},
 
-    {q : ['테스트가 모두 끝났어. 결과 보러 갈래?'],
+    {q : ['테스트가 모두 끝났어! 결과 보러 갈래?'],
      a : [{type : '', text : '결과 보러 가기'}]}
   ]
   
@@ -79,27 +79,156 @@ function App() {
     {name : 'F', count : 0}, {name : 'T', count : 0}, {name : 'P', count : 0}, {name : 'J', count : 0},
   ])
 
+  const clickAnswer = (type, index) => {
+    let ls = mbtiList
+    for(let i = 0; i < ls.length; i++) {
+      if(ls[i].name === type) {
+        ls[i].count = ls[i].count + 1
+      }
+    }
+    setMbtiList(ls)
+    setPage(page + 1)
+
+    if(index + 1 === questionList.length) {
+      setMbti()
+    }
+  }
+
+  const [mbtiContents, setMbtiContents] = useState([])
+
+  function setMbti() {
+    let mc = [
+      {mbti : 'ENFP', contents : ['소통과 공감킹!', '은근 독립적인 성격이에요', '생각이 참 많아요']},
+      {mbti : 'INFP', contents : ['MBTI 과몰입러', '미룰 수 있는 건 끝까지 미뤄요', '호불호가 확실해요']},
+      {mbti : 'ENTP', contents : ['말을 잘해요', '이상한 말하기 선수!', '혼자서도 잘 해요']},
+      {mbti : 'INTP', contents : ['팩트 폭격기!', '감수성이 풍부해요', '주관이 뚜렷해요']},
+      {mbti : 'ENTJ', contents : ['직감이 좋아요', '주변 사람을 잘 챙겨요', '쿨해요']},
+      {mbti : 'INTJ', contents : ['혼자 있는 걸 좋아해요', '돈 관리를 잘해요', '공감을 잘 해요']},
+      {mbti : 'ENFJ', contents : ['분위기 메이커', '리액션이 좋아요', '남에게 싫은 소리를 잘 못해요']},
+      {mbti : 'INFJ', contents : ['집순이/집돌이', '사람을 보는 통찰력이 깊어요', '자신만의 철학이 있어요']},
+      {mbti : 'ESTP', contents : ['손재주가 좋아요', '리더십킹!', '표현을 아끼지 않아요']},
+      {mbti : 'ISTP', contents : ['효율이 짱!', '관찰력이 뛰어나요', '기계를 잘 만지고 좋아해요']},
+      {mbti : 'ESFJ', contents : ['남을 잘 챙겨요', '눈치가 빨라요', '새로운 사람과의 술자리를 좋아해요']},
+      {mbti : 'ISFJ', contents : ['남 챙기는 걸 좋아해요', '공감을 잘 해요', '내가 싫은 건 남한테도 안 해요']},
+      {mbti : 'ESTJ', contents : ['호불호가 명확하고 단호박이에요', '기억력이 좋아요', '완벽주의자 성향']},
+      {mbti : 'ISTJ', contents : ['원리원칙적이에요', '즉흥적인 거 싫어해요', '철벽킹!']},
+      {mbti : 'ESFP', contents : ['사교성이 좋아요', '자존감이 높아요', '상처 잘 받는데 또 잘 풀려요']},
+      {mbti : 'ISFP', contents : ['노는 거 은근 좋아해요', '근데 집에 있는 거 최고!', '누가 뭐라해도 마이웨이~']},
+    ]
+
+    let EorI = 
+      mbtiList.find(function(data){return data.name === 'E'}).count >
+      mbtiList.find(function(data){return data.name === 'I'}).count ? 'E' : 'I'
+
+    let NorS = 
+      mbtiList.find(function(data){return data.name === 'N'}).count >
+      mbtiList.find(function(data){return data.name === 'S'}).count ? 'N' : 'S'
+
+    let ForT = 
+      mbtiList.find(function(data){return data.name === 'F'}).count >
+      mbtiList.find(function(data){return data.name === 'T'}).count ? 'F' : 'T'
+
+    let PorJ = 
+      mbtiList.find(function(data){return data.name === 'P'}).count >
+      mbtiList.find(function(data){return data.name === 'J'}).count ? 'P' : 'J'
+
+      let mbti = EorI + NorS + ForT + PorJ
+
+      setMbtiContents(mc.filter(item => item.mbti === mbti)[0])
+  }
+
+
   return (
     <div className='mbtiLayout'>
+
       { page === 0 ?
         <div className='startPageLayout'>
           <div className='startLogo'>
             <div>MBTI</div>
             <div>▼</div>
           </div>
-          <div onClick={ () => setPage(1) } className='startBtn'>
-            테스트 시작하기
-          </div>
+
+          <div onClick={ () => setPage(1) } className='startBtn'>테스트 시작하기</div>
         </div>
         : page <= questionList.length ? 
-        <div>
-          테스트 페이지
+
+        <div className='questionLayout'>
+          <div className='mbtiTitle'>
+            <div>MBTI 테스트</div>
+            <div>{`${page} / ${questionList.length}`}</div>
+          </div>
+
+          {
+            questionList.map((item, index) => 
+              <div className='questionList' style={{ display : page === index + 1 ? 'flex' : 'none' }} key={ index }>
+                <div className='questionItem'>
+                  <div className='profileImg'>
+                    <div></div>
+                    <div></div>
+                  </div>
+
+                  <div className='chatList'>
+                    { item.q.map((qitem,qindex) => 
+                      <div key={ qindex } className='chatBox'>
+                        <div>◀</div> <div>{ qitem }</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className='answerItem'>
+                  <div className='aChatBox'>
+                    <div>+</div> <div>#</div>
+                  </div>
+                    { 
+                      item.a.map((aitem, aindex) => 
+                        <div key={ aindex } className='answerBox' onClick={ () => clickAnswer(aitem.type, index) }>
+                          { aitem.text }
+                        </div>
+                    )}  
+                </div>
+              </div>
+            )
+          }
+
         </div>
-        : 
-        <div>
-          결과 페이지
+
+        :
+
+        <div className='questionLayout'>
+          <div className='mbtiTitle'>
+            <div>MBTI 테스트</div>
+            <div onClick={ () => window.location.reload() }>다시하기</div>
+          </div>
+
+            <div className='questionList' style={{ display : 'flex'}}>
+              <div className='questionItem'>
+                <div className='profileImg'>
+                  <div></div>
+                  <div></div>
+                </div>
+
+                <div className='chatList'>
+                  <div className='chatBox'>
+                    <div>◀</div> <div>당신의 MBTI는 {mbtiContents.mbti}입니다.</div>
+                  </div>
+
+                  <div className='chatBox'>
+                    <div>◀</div> <div>{mbtiContents.mbti}는요~ </div>
+                  </div>
+
+                  { 
+                    mbtiContents.contents.map((item, index) => 
+                      <div className='chatBox' key={index }>
+                        <div>◀</div> <div>{ item }</div>
+                      </div>
+                  )}
+              
+                </div>
+              </div>
+            </div>
         </div>
       }
+
     </div>
   );
 }
