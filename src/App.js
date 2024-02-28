@@ -3,6 +3,7 @@ import './App.css';
 
 function App() {
 
+//////////////////////////////////////////////////////////////
   const setVh = () => {
     const vh = window.innerHeight * 0.01 
     document.documentElement.style.setProperty('--vh', `${vh}px`)
@@ -10,18 +11,19 @@ function App() {
 
   useEffect(() => {
     setVh()
-
-    function onResize() {
+    
+    const onResize = () => {
       setVh()
     }
 
     window.addEventListener('resize', onResize)
 
   }, [])
+///////////////////////////////////////////////////////////////////
 
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(0)//문제 이동에 따른 상태변수 초기값은 0
   
-  const questionList = [
+  const questionList = [ //단순한 mbti 데이터, type은 해당 답변의 type - 나중에 결과값 도출할때 사용
     {q : ['갑자기 일이 생겨서', '오늘 못 만날 것 같아'],
      a : [{type : 'E', text : '어쩔 수 없지 뭐ㅠㅠ(누구랑 만나서 놀까?!)'},
           {type : 'I', text : '어쩔 수 없지 뭐ㅠㅠ(아싸!! 빨리 침대로~)'}]},
@@ -74,20 +76,23 @@ function App() {
      a : [{type : '', text : '결과 보러 가기'}]}
   ]
   
-  const [mbtiList, setMbtiList] = useState([
+  const [mbtiList, setMbtiList] = useState([ //mbtilist를 상태변수로 잡고 setMbtiList의 name과 type이 일치할 경우 count 될 수 있게 초기값을 0으로 지정
     {name : 'E', count : 0}, {name : 'I', count : 0}, {name : 'N', count : 0}, {name : 'S', count : 0},
     {name : 'F', count : 0}, {name : 'T', count : 0}, {name : 'P', count : 0}, {name : 'J', count : 0},
   ])
 
-  const clickAnswer = (type, index) => {
-    let ls = mbtiList
-    for(let i = 0; i < ls.length; i++) {
-      if(ls[i].name === type) {
-        ls[i].count = ls[i].count + 1
+  const clickAnswer = (type, index) => { //답이 눌렸을 때 실행되는 함수
+    let ls = mbtiList // mbtiList를 let ls로 재선언
+
+    for(let i = 0; i < ls.length; i++) { // let i가 0일 때 ls인 mbtiList의 length보다 작을 때 까지 하나씩 늘려서 답을 도출
+      if(ls[i].name === type) { //만약 mbtiList[i].name 즉 for문에 해당되는 i의 name이 questionList의 type과 같다면
+         ls[i].count = ls[i].count + 1 //mbtiList의 count에 +1을 해준다.
       }
     }
-    setMbtiList(ls)
-    setPage(page + 1)
+    
+    setMbtiList(ls) // for문으로 도출 된 mbti의 값을 가져온다
+
+    setPage(page + 1) // 0으로 시작하는 page에 +1로 
 
     if(index + 1 === questionList.length) {
       setMbti()
@@ -96,8 +101,8 @@ function App() {
 
   const [mbtiContents, setMbtiContents] = useState([])
 
-  function setMbti() {
-    let mc = [
+  const setMbti = () => {
+    const mc = [
       {mbti : 'ENFP', contents : ['소통과 공감킹!', '은근 독립적인 성격이에요', '생각이 참 많아요']},
       {mbti : 'INFP', contents : ['MBTI 과몰입러', '미룰 수 있는 건 끝까지 미뤄요', '호불호가 확실해요']},
       {mbti : 'ENTP', contents : ['말을 잘해요', '이상한 말하기 선수!', '혼자서도 잘 해요']},
@@ -116,25 +121,25 @@ function App() {
       {mbti : 'ISFP', contents : ['노는 거 은근 좋아해요', '근데 집에 있는 거 최고!', '누가 뭐라해도 마이웨이~']},
     ]
 
-    let EorI = 
-      mbtiList.find(function(data){return data.name === 'E'}).count >
-      mbtiList.find(function(data){return data.name === 'I'}).count ? 'E' : 'I'
+    const EorI = 
+      mbtiList.find(item => item.name === 'E').count > 
+      mbtiList.find(item => item.name === 'I').count ? 'E' : 'I'
 
-    let NorS = 
-      mbtiList.find(function(data){return data.name === 'N'}).count >
-      mbtiList.find(function(data){return data.name === 'S'}).count ? 'N' : 'S'
+    const NorS = 
+      mbtiList.find(item => item.name === 'N').count >
+      mbtiList.find(item => item.name === 'S').count ? 'N' : 'S'
 
-    let ForT = 
-      mbtiList.find(function(data){return data.name === 'F'}).count >
-      mbtiList.find(function(data){return data.name === 'T'}).count ? 'F' : 'T'
+    const ForT = 
+      mbtiList.find(item => item.name === 'F').count >
+      mbtiList.find(item => item.name === 'T').count ? 'F' : 'T'
 
-    let PorJ = 
-      mbtiList.find(function(data){return data.name === 'P'}).count >
-      mbtiList.find(function(data){return data.name === 'J'}).count ? 'P' : 'J'
+    const PorJ = 
+      mbtiList.find(item => item.name === 'P').count >
+      mbtiList.find(item => item.name === 'J').count ? 'P' : 'J'
 
-      let mbti = EorI + NorS + ForT + PorJ
+    const mbti = EorI + NorS + ForT + PorJ;
 
-      setMbtiContents(mc.filter(item => item.mbti === mbti)[0])
+    setMbtiContents(mc.find(item => item.mbti === mbti))
   }
 
 
@@ -155,7 +160,7 @@ function App() {
         <div className='questionLayout'>
           <div className='mbtiTitle'>
             <div>MBTI 테스트</div>
-            <div>{`${page} / ${questionList.length}`}</div>
+            <div>{page} / {questionList.length}</div>
           </div>
 
           {
@@ -209,7 +214,7 @@ function App() {
 
                 <div className='chatList'>
                   <div className='chatBox'>
-                    <div>◀</div> <div>당신의 MBTI는 {mbtiContents.mbti}입니다.</div>
+                    <div>◀</div> <div>당신의 MBTI는 { mbtiContents.mbti }입니다.</div>
                   </div>
 
                   <div className='chatBox'>
@@ -218,7 +223,7 @@ function App() {
 
                   { 
                     mbtiContents.contents.map((item, index) => 
-                      <div className='chatBox' key={index }>
+                      <div className='chatBox' key={ index }>
                         <div>◀</div> <div>{ item }</div>
                       </div>
                   )}
